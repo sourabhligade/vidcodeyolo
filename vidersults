@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Detection Results</title>
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .frame-container {
+            margin: 10px;
+            text-align: center;
+        }
+
+        .frame {
+            position: relative;
+            display: inline-block;
+        }
+
+        .bounding-box {
+            position: absolute;
+            border: 2px solid red;
+            pointer-events: none;
+        }
+
+        .label {
+            background-color: red;
+            color: white;
+            font-size: 12px;
+            padding: 2px 5px;
+            border-radius: 4px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video Detection Results</h1>
+    <div class="container">
+        {% for frame_result in frames_results %}
+        <div class="frame-container">
+            <div class="frame">
+                <img src="{{ frame_result.result_image_url }}" alt="Frame {{ frame_result.frame }}">
+                {% for detection in frame_result.detection_results %}
+                <div class="bounding-box" style="top: {{ detection.box.1 }}px; left: {{ detection.box.0 }}px; width: {{ detection.box.2 }}px; height: {{ detection.box.3 }}px;"></div>
+                <div class="label" style="top: {{ detection.box.1 }}px; left: {{ detection.box.0 }}px;">{{ detection.label }} ({{ detection.confidence }})</div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
